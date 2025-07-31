@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Betya Hero Prototype</title>
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Orbitron', sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2;
+        }
+
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            min-width: 160px;
+            border-radius: 10px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #dbf93a;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-trigger {
+            font-size: 28px;
+            color: #dbf93a;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .dropdown-trigger:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-label {
+            color: #58dd53;
+            font-weight: bold;
+            margin-left: 10px;
+            font-size: 25px;
+            animation: glowPulse 3s infinite;
+        }
+
+        .logo-header {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            height: 40px;
+        }
+
+        .logo-header img {
+            height: 100%;
+        }
+
+        .logo-container {
+            width: 550px;
+            height: 550px;
+            margin: -20px auto 0;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px #dbf93a);
+        }
+
+        .open-app {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: #58dd53;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .hero-section {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 100px;
+        }
+
+        .slogan {
+            margin-top: 30px;
+            font-size: 28px;
+            color: #58dd53;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: fadePop 2s 2s forwards;
+        }
+
+        /* Section Two - Learn More */
+        .section-two {
+            height: 100vh;
+            padding: 80px 5% 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 40px;
+            background: #000;
+        }
+
+        .section-heading {
+            color: #78fa8f;
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: -100px;
+            margin-bottom: 20px;
+        }
+
+        .info-boxes {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .info-box {
+            border-radius: 25px;
+            padding: 40px;
+            font-size: 18px;
+            line-height: 1.6;
+            backdrop-filter: blur(12px);
+            border: 2px solid;
+            height: auto;
+            text-align: center;
+        }
+
+        .info-box.yellow {
+            background-color: rgba(219, 249, 58, 0.25);
+            color: #000;
+            border-color: #58dd53;
+            box-shadow: 0 0 15px #58dd53;
+            animation: borderPulseYellow 3s infinite;
+        }
+
+        .info-box.green {
+            background-color: rgba(88, 221, 83, 0.25);
+            color: #000;
+            border-color: #dbf93a;
+            box-shadow: 0 0 15px #dbf93a;
+            animation: borderPulseGreen 3s infinite;
+        }
+
+        .info-box h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            margin-top: 0;
+            font-weight: bold;
+        }
+
+        @keyframes rotateGlow {
+            from {
+                opacity: 0;
+                transform: rotate(0deg) scale(0.8);
+                filter: drop-shadow(0 0 0px #dbf93a);
+            }
+
+            to {
+                opacity: 1;
+                transform: rotate(360deg) scale(1);
+                filter: drop-shadow(0 0 10px #dbf93a);
+            }
+        }
+
+        @keyframes fadePop {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes glitchIn {
+            0% {
+                opacity: 0;
+                transform: scale(1.5) skewX(20deg);
+                filter: blur(5px) brightness(2);
+            }
+
+            20% {
+                opacity: 0.5;
+                transform: scale(1.2) skewX(-10deg);
+                filter: blur(3px) brightness(1.7);
+            }
+
+            40% {
+                opacity: 0.7;
+                transform: scale(0.95) skewX(10deg);
+                filter: blur(1.5px) brightness(1.3);
+            }
+
+            60% {
+                opacity: 0.9;
+                transform: scale(1.02) skewX(-2deg);
+                filter: blur(0.5px) brightness(1.1);
+            }
+
+            80% {
+                opacity: 1;
+                transform: scale(1.01) skewX(0deg);
+                filter: blur(0.2px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: none;
+            }
+        }
+
+        @keyframes glowPulse {
+            50% {
+                text-shadow: 0 0 15px #dbf93a;
+                opacity: 0.6;
+            }
+
+            100% {
+                text-shadow: 0 0 5px #dbf93a;
+                opacity: 1;
+            }
+        }
+
+        .glitch-in {
+            animation: glitchIn 2s ease-out forwards;
+        }
+
+        @keyframes borderPulseYellow {
+
+            0%,
+            100% {
+                border-color: #58dd53;
+                box-shadow: 0 0 10px #58dd53;
+            }
+
+            50% {
+                border-color: #58dd53;
+                box-shadow: 0 0 20px #58dd53;
+            }
+        }
+
+        @keyframes borderPulseGreen {
+
+            0%,
+            100% {
+                border-color: #dbf93a;
+                box-shadow: 0 0 10px #dbf93a;
+            }
+
+            50% {
+                border-color: #dbf93a;
+                box-shadow: 0 0 20px #dbf93a;
+            }
+        }
+
+        /* Section Three - Roadmap */
+        .section-three {
+            background: #000;
+            padding: 535px 5% 80px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-three h2 {
+            color: #78fa8f;
+            font-size: 36px;
+            margin-bottom: 60px;
+            text-shadow: 0 0 15px #58dd53;
+        }
+
+        .roadmap-step {
+            margin-bottom: 100px;
+            padding: 0px;
+            padding-bottom: 40px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid #58dd53;
+            box-shadow: 0 0 15px #58dd53, 0 0 25px #58dd53 inset;
+            animation: borderPulseYellow 3s infinite;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            max-width: 1250px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .roadmap-step:hover::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(219, 249, 58, 0.35);
+            pointer-events: none;
+        }
+
+        .roadmap-step>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .roadmap-step .date {
+            font-size: 24px;
+            color: #dbf93a;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .roadmap-step h3 {
+            font-size: 28px;
+            color: #58dd53;
+            margin-bottom: 20px;
+        }
+
+        .roadmap-step ul {
+            list-style: none;
+            padding: 0;
+            color: #fff;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .roadmap-step ul li {
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .roadmap-step ul li.visible {
+            animation: fadeSlideUp 1s forwards;
+            animation-delay: calc(var(--i, 0) * 0.2s);
+        }
+
+        @keyframes fadeSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* Section Four - FAQ */
+        .section-four {
+            background-color: black;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .faq-section {
+            padding: -50px 20px;
+            /* lowered from 100px */
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .faq-section h2 {
+            font-size: 2.5rem;
+            margin-top: 0;
+            /* reset top margin */
+            margin-bottom: 20px;
+            color: #dbf93a;
+            text-shadow: 0 0 15px #dbf93a;
+        }
+
+        .faq-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid #58dd53;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 0 10px #58dd53;
+        }
+
+        .faq-question {
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            margin-top: 10px;
+            font-size: 1rem;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        /* Section Five - Contact */
+        .contact-section {
+            padding: 100px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            background: radial-gradient(circle at center, #101010, #000000);
+            border-top: 1px solid #333;
+        }
+
+        .contact-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #58dd53;
+            text-shadow: 0 0 15px #58dd53;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 1.2rem;
+            color: #ccc;
+        }
+
+        .contact-details span {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .contact-details span:hover {
+            color: #dbf93a;
+            text-shadow: 0 0 10px #dbf93a;
+        }
+    </style>
+</head>
+
+<body>
+    <div
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; background: url('background.png') center/cover no-repeat; opacity: 0.15; z-index: 0;">
+    </div>
+
+    <header>
+
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="dropdown">
+                <span class="dropdown-trigger">☰</span>
+                <div class="dropdown-content">
+                    <a class="scroll-link" data-target="learn">Learn More</a>
+                    <a class="scroll-link" data-target="roadmap">Roadmap</a>
+                    <a class="scroll-link" data-target="faq">FAQ</a>
+                    <a class="scroll-link" data-target="contact">Contact</a>
+                </div>
+            </div>
+            <span class="brand-label">BETYA</span>
+        </div>
+
+        <div class="logo-header">
+            <a href="#top"><img src="logo.png" alt="Betya Logo"></a>
+        </div>
+        <button class="open-app">Open App</button>
+    </header>
+
+    <div class="hero-section">
+        <div class="logo-container glitch-in">
+            <img src="logo.png" alt="Betya Logo">
+        </div>
+        <div class="slogan">Wager Anytime. Anyone. Anything.</div>
+    </div>
+
+    <section class="section-two" id="learn">
+        <h2 class="section-heading">LEARN MORE ABOUT BETYA</h2>
+        <div class="info-boxes">
+            <div class="info-box yellow">
+                <h3>Peer-to-Peer Wager Protocol. Verified. Immutable. Human-Powered.</h3>
+                <p><strong>The next-gen layer for social betting — decentralized, trackable, and frictionless.</strong>
+                </p>
+                <p>Betya is a peer-to-peer wager protocol that documents, timestamps, and verifies friendly challenges —
+                    without holding funds. It acts as a trustless layer between users, providing a structured wager
+                    ledger, outcome verification flow, and automated settlement reminders. No middlemen. No forgotten
+                    bets. Just clear terms, mutual accountability, and a better way to settle the score.</p>
+            </div>
+            <div class="info-box green">
+                <h3>Simple Flow. Solid Structure. No Loose Ends.</h3>
+                <p><strong>1. Create the Wager</strong><br>Set your terms, opponent, deadline, and stakes — all in one
+                    clean form.</p>
+                <p><strong>2. Lock It In</strong><br>Both users confirm the wager to make it official. All terms are
+                    time-stamped and logged.</p>
+                <p><strong>3. Complete the Challenge</strong><br>Once the event or challenge ends, each user confirms
+                    the outcome.</p>
+                <p><strong>4. Settle the Score</strong><br>Betya sends a smart reminder to pay up — no excuses, no
+                    confusion.</p>
+                <p style="margin-top: 15px; font-style: italic;">#timestamped #mutual-confirmation #proof-of-play</p>
+            </div>
+            <div class="info-box green">
+                <h3>Too Many Bets Are Lost in the Noise.</h3>
+                <p><strong>Handshake wagers and text thread bets are easy to forget, dispute, or dodge.</strong></p>
+                <p>Informal bets get messy. People forget the terms. Screenshots go missing. One side ghosts. There’s no
+                    structure. No record. No easy way to prove who won or what was agreed. That’s where Betya comes in —
+                    a lightweight layer of accountability that formalizes every friendly wager with digital receipts,
+                    confirmation flows, and no room for "I don’t remember."</p>
+            </div>
+            <div class="info-box yellow">
+                <h3>The Future of Wagering Is Already in Motion.</h3>
+                <p><strong>Betya is building the ultimate competition platform — secure, intelligent, and insanely
+                        smooth.</strong></p>
+                <ul>
+                    <li><strong>Escrow-Backed Wagers:</strong> Funds are locked until the winner is confirmed.</li>
+                    <li><strong>Instant Payouts:</strong> Seamless integrations with Venmo, PayPal, Apple/Google Pay.
+                    </li>
+                    <li><strong>AI-Powered Dispute Resolution:</strong> Detect inconsistencies and resolve claims
+                        fairly.</li>
+                    <li><strong>Global Leaderboards & Player Stats:</strong> Rank up, track wins/losses, view wager
+                        history.</li>
+                    <li><strong>Custom Wager Types & Tournaments:</strong> 1v1s, teams, brackets — Betya supports all.
+                    </li>
+                    <li><strong>Deep Wager Analytics:</strong> Win rate, opponents faced, most profitable categories.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-three" id="roadmap">
+        <h2>Roadmap</h2>
+        <div class="roadmap-step">
+            <div class="date">January 1, 2026</div>
+            <h3>Phase 1: Launch of Betya Protocol</h3>
+            <ul>
+                <li style="--i: 0">Launch of peer-to-peer wager ledger</li>
+                <li style="--i: 1">Timestamped challenge creation</li>
+                <li style="--i: 2">Mutual confirmation flow</li>
+                <li style="--i: 3">Smart reminders for payments (no funds held)</li>
+                <li style="--i: 4">Live user feedback and testing begins</li>
+            </ul>
+        </div>
+        <div class="roadmap-step">
+            <div class="date">July 1, 2026</div>
+            <h3>Phase 2: Escrow & Settlement</h3>
+            <ul>
+                <li style="--i: 0">Optional escrow holding</li>
+                <li style="--i: 1">Automatic payouts via Venmo, PayPal, Apple Pay, Google Pay</li>
+                <li style="--i: 2">Dispute protection layer</li>
+                <li style="--i: 3">Legal compliance updates</li>
+                <li style="--i: 4">Expansion of community tournaments</li>
+            </ul>
+        </div>
+        <div class="roadmap-step">
+            <div class="date">January 1, 2027</div>
+            <h3>Phase 3: The Betya Intelligence Layer</h3>
+            <ul>
+                <li style="--i: 0">AI-powered dispute detection and resolution</li>
+                <li style="--i: 1">Global leaderboard + player profiles</li>
+                <li style="--i: 2">Deep wager analytics dashboard</li>
+                <li style="--i: 3">Custom wager types (brackets, 1v1s, teams)</li>
+                <li style="--i: 4">Full feature parity across mobile and desktop</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="faq-section" id="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">Is Betya a gambling app? <span>+</span></div>
+                <div class="faq-answer">No. Betya is a peer-to-peer wager protocol for friendly, skill-based challenges.
+                    It does not facilitate or process gambling or chance-based bets.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">How does Betya make money? <span>+</span></div>
+                <div class="faq-answer">Betya may charge a small fee for services such as wager verification or future
+                    escrow handling.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Do I need to link my payment accounts? <span>+</span></div>
+                <div class="faq-answer">No. Users log wager terms and are reminded to pay each other manually through
+                    their preferred payment apps.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">What happens if someone doesn’t pay? <span>+</span></div>
+                <div class="faq-answer">Betya will log this on their profile and notify both users. Future versions may
+                    include reputation systems or dispute support.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Can I cancel a wager after it’s confirmed? <span>+</span></div>
+                <div class="faq-answer">Once both parties confirm, it is logged and considered binding. Both must agree
+                    to cancel.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">How are outcomes verified? <span>+</span></div>
+                <div class="faq-answer">Both users submit the result. If there’s a mismatch, Betya initiates a
+                    confirmation flow or dispute sequence.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Is my data secure? <span>+</span></div>
+                <div class="faq-answer">Yes. Betya uses Firebase authentication and access rules to protect user data.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Do I need to be in a specific state to use Betya? <span>+</span></div>
+                <div class="faq-answer">Betya is compliant with peer-to-peer, skill-based wager rules. Availability may
+                    vary based on local laws.</div>
+            </div>
+        </div>
+
+        <section class="contact-section" id="contact">
+            <h2>Contact Us</h2>
+            <div class="contact-details">
+                <span>Email: support@betya.app</span>
+                <span>Phone: (555) 123-4567</span>
+                <span>Discord: betya.io/discord</span>
+                <span>Twitter: @betya_app</span>
+            </div>
+        </section>
+
+    </section>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('.roadmap-step ul li').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.scroll-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetID = this.getAttribute('data-target');
+                const target = document.getElementById(targetID);
+                if (!target) return;
+
+                const headerOffset = 110; // Adjust this until it’s pixel-perfect
+                const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+                const offsetPosition = elementPosition - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
