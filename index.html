@@ -528,7 +528,7 @@
         <div class="logo-header">
             <a href="#top"><img src="logo.png" alt="Betya Logo"></a>
         </div>
-        <button class="open-app">Open App</button>
+        <button id="openAppBtn" class="open-app">Open App</button>
     </header>
 
     <div class="hero-section">
@@ -684,6 +684,12 @@
         </section>
 
     </section>
+
+    <script>
+        document.getElementById('openAppBtn').addEventListener('click', function () {
+            window.open('https://betya-app.netlify.app', '_blank');
+        });
+    </script>
 
     <script>
         const observer = new IntersectionObserver((entries) => {
