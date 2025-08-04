@@ -41,46 +41,43 @@
 
         .dropdown {
             position: relative;
-            display: inline-block;
+            z-index: 1000;
         }
 
         .dropdown-content {
-            display: none;
             position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 140px;
+            display: none !important;
             background-color: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(8px);
-            min-width: 160px;
             border-radius: 10px;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            z-index: 1;
+            padding: 10px 0;
+            z-index: 9999;
+        }
+
+        .dropdown-content.show {
+            display: block !important;
         }
 
         .dropdown-content a {
-            color: #dbf93a;
-            padding: 12px 16px;
-            text-decoration: none;
+            padding: 10px;
             display: block;
+            text-align: center;
+            font-size: 1rem;
+            text-decoration: none;
+            color: #dbf93a;
         }
-
-        .dropdown-content a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-
 
         .dropdown-trigger {
-            font-size: 28px;
-            color: #dbf93a;
-            font-weight: bold;
+            font-size: 35px;
+            /* Increase or decrease to control size */
             cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 8px;
-            transition: background 0.3s;
+            /* Makes it feel clickable */
         }
 
-        .dropdown-trigger:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
+
 
         .brand-label {
             color: #58dd53;
@@ -557,35 +554,6 @@
                 white-space: nowrap;
             }
 
-            .dropdown-trigger {
-                max-width: 35px;
-            }
-
-            .dropdown {
-                position: relative;
-                z-index: 1000;
-            }
-
-            .dropdown-trigger {
-                max-width: 35px;
-            }
-
-            .dropdown-content {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                min-width: 140px;
-                display: none !important;
-                background-color: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(8px);
-                border-radius: 10px;
-                padding: 10px 0;
-                z-index: 9999;
-            }
-
-            .dropdown-content.show {
-                display: block !important;
-            }
 
             .dropdown-content a {
                 padding: 10px;
@@ -841,10 +809,8 @@
         <section class="contact-section" id="contact">
             <h2>Contact Us</h2>
             <div class="contact-details">
-                <span>Email: support@betya.app</span>
-                <span>Phone: (555) 123-4567</span>
-                <span>Discord: betya.io/discord</span>
-                <span>Twitter: @betya_app</span>
+                <span>Email: contact.betya.us@gmail.com</span>
+                <span>Phone: (510) 557 5375</span>
             </div>
         </section>
 
