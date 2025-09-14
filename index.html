@@ -129,13 +129,36 @@
         .hero-section {
             position: relative;
             z-index: 1;
-            height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding-bottom: 100px;
+            padding-top: 125px;
+            /* desktop header height */
         }
+
+
+
+        .video-container {
+            width: 95%;
+            /* leave room on sides */
+            height: 95vh;
+            /* leave room top/bottom */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* makes it wall-to-wall */
+            border: 5px solid #dbf93a;
+            /* neon yellow */
+            box-shadow: 0 0 20px #dbf93a;
+            /* glowing effect */
+        }
+
 
         .slogan {
             margin-top: 30px;
@@ -148,6 +171,8 @@
 
         /* Section Two - Learn More */
         .section-two {
+            margin-top: 120px;
+            /* push section down */
             height: 100vh;
             padding: 80px 5% 50px;
             display: flex;
@@ -157,6 +182,7 @@
             gap: 40px;
             background: #000;
         }
+
 
         .section-heading {
             color: #78fa8f;
@@ -575,9 +601,46 @@
                 padding: 0 10px;
             }
 
+
+            .hero-section {
+                padding-top: 100px;
+                /* smaller header on phones */
+                margin-top: 0;
+                /* no extra margin */
+                height: auto;
+            }
+
+            .video-container {
+                width: 100%;
+                /* take full width */
+                height: auto;
+                /* shrink-wrap to video */
+                margin: 0;
+                /* remove leftover spacing */
+                padding: 0;
+                display: block;
+                /* drop flex so it doesn’t stretch */
+            }
+
+            #hero-video {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 16 / 9;
+                object-fit: contain;
+                background: black;
+                border: 3px solid #dbf93a;
+                box-shadow: 0 0 10px #dbf93a;
+                display: block;
+            }
+
+
             .section-two {
-                padding-top: -100px;
-                padding-bottom: 0px;
+                margin-top: 20px;
+                /* much smaller, just a little breathing room */
+                height: auto;
+                /* don’t force full viewport height */
+                padding-top: 40px;
+                /* optional, balances spacing inside */
             }
 
             .section-heading {
@@ -619,21 +682,6 @@
                 margin-top: 120px;
             }
         }
-
-        @media (max-width: 480px) {
-            .logo-container {
-                width: 250px;
-                height: 250px;
-            }
-
-            .hero-section {
-                padding: 30px 10px 80px;
-            }
-
-            .slogan {
-                font-size: 16px;
-            }
-        }
     </style>
 </head>
 
@@ -665,11 +713,14 @@
     </header>
 
     <div class="hero-section">
-        <div class="logo-container glitch-in">
-            <img src="logo.png" alt="Betya Logo">
+        <div class="video-container">
+            <video autoplay muted loop playsinline id="hero-video">
+                <source src="betya-intro.mp4" type="video/mp4">
+            </video>
         </div>
-        <div class="slogan">Wager Anytime. Anyone. Anything.</div>
     </div>
+
+
 
     <section class="section-two" id="learn">
         <h2 class="section-heading">LEARN MORE ABOUT BETYA</h2>
@@ -810,7 +861,6 @@
             <h2>Contact Us</h2>
             <div class="contact-details">
                 <span>Email: contact.betya.us@gmail.com</span>
-                <span>Phone: (510) 557 5375</span>
             </div>
         </section>
 
