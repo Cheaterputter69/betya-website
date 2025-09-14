@@ -636,11 +636,11 @@
 
             .section-two {
                 margin-top: 20px;
-                /* much smaller, just a little breathing room */
+                /* just a little breathing room */
                 height: auto;
-                /* don’t force full viewport height */
+                /* let content size itself */
                 padding-top: 40px;
-                /* optional, balances spacing inside */
+                /* balanced spacing inside */
             }
 
             .section-heading {
@@ -659,7 +659,10 @@
             }
 
             .section-three {
-                margin-top: 1250px;
+                margin-top: 0;
+                /* ✅ remove giant gap */
+                padding-top: 0px;
+                /* controlled spacing */
             }
 
             .roadmap-step h3 {
@@ -667,7 +670,9 @@
             }
 
             .faq-section {
-                margin-top: 120px;
+                margin-top: 0px;
+                /* tighten spacing */
+                padding-top: 0px;
             }
 
             .faq-question {
@@ -679,8 +684,11 @@
             }
 
             .contact-section {
-                margin-top: 120px;
+                margin-top: 40px;
+                /* smaller, consistent gap */
+                padding-top: 40px;
             }
+
         }
     </style>
 </head>
